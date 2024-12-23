@@ -4,6 +4,7 @@
 - Kafka has **High Throughput**
 - **Throughput** means how many operationn we can perform per second
 - Kafka relies on [**ZooKeeper**](https://www.openlogic.com/blog/using-kafka-zookeeper) (or **KRaft** in newer versions) for metadata management.
+- Kafka has **admin** which has task for creating topics and partition etc, **producers** that produces data, **consumer** that consumes data.
 
 What is an “**A distributed streaming platform**”? First, we need to define what is a **stream**. For that, I have a definition that made me really understand it: **Streams are just infinite data, data that never end. It just keeping arriving, and you can process it in real-time**.
 
@@ -23,7 +24,7 @@ So, basically, **Kafka is a set of machines working together to be able to handl
 - **Consumer**: Reads messages from Kafka topics.
 - **Broker**: A Kafka server that stores data and serves client requests. - Kafka is often deployed as a cluster of brokers.
 - **Topic**: A logical channel to which producers send messages and consumers read them.Topics can have multiple `partitions` for parallelism and scalability.
-- **Partition**: Subdivision of a topic that stores a portion of the messages. Each partition is ordered and immutable.
+- **Partition**: Subdivision of a topic that stores a portion of the messages. Each partition is ordered and immutable. 
 - **Offset**: A unique identifier for each message within a partition.
 - **Consumer Group**: A collection of consumers working together to consume data from a topic's partitions.
 
@@ -50,6 +51,12 @@ So, basically, **Kafka is a set of machines working together to be able to handl
 - rack the last consumed record.
 - Stored in Kafka (committed offsets) or managed by the application.
 
+## Partition Assignment?
+In Apache Kafka, partitions in a topic are distributed among consumers within the same consumer group for load balancing. Kafka ensures that each partition is consumed by only one consumer in a group, using a process called partition assignment.
 
+**General Rules**
 
-
+In Apache Kafka, partitions in a topic are distributed among consumers within the same consumer group for load balancing. Kafka ensures that each partition is consumed by only one consumer in a group, using a process called partition assignment.
+- Kafka ensures **each partition is assigned to exactly one consumer** in a group.
+- If **consumers > partitions**, some consumers will remain idle (not assigned any partitions).
+- If **partitions > consumers**, some consumers will handle multiple partitions. Kafka tries to distribute partitions as evenly as possible.
