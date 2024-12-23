@@ -3,7 +3,7 @@
 - Kafka works on a **pub-sub model**, allowing decoupling of producers and consumers.
 - Kafka has **High Throughput**
 - **Throughput** means how many operationn we can perform per second
-- Kafka relies on **ZooKeeper** (or **KRaft** in newer versions) for metadata management.
+- Kafka relies on [**ZooKeeper**](https://www.openlogic.com/blog/using-kafka-zookeeper) (or **KRaft** in newer versions) for metadata management.
 
 What is an “**A distributed streaming platform**”? First, we need to define what is a **stream**. For that, I have a definition that made me really understand it: **Streams are just infinite data, data that never end. It just keeping arriving, and you can process it in real-time**.
 
