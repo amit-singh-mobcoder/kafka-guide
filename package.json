@@ -1,0 +1,12 @@
+{
+  "name": "kafka-guide",
+  "version": "1.0.0",
+  "description": "a kafka app",
+  "main": "index.js",
+  "repository": "https://github.com/amit-singh-mobcoder/kafka-guide.git",
+  "author": "amit-singh-mobcoder <amit.s@mobcoder.com>",
+  "license": "MIT",
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  }
+}
