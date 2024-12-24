@@ -25,7 +25,7 @@ So, basically, **Kafka is a set of machines working together to be able to handl
 - **Broker**: A Kafka server that stores data and serves client requests. - Kafka is often deployed as a cluster of brokers.
 - **Topic**: A logical channel to which producers send messages and consumers read them.Topics can have multiple `partitions` for parallelism and scalability.
 - **Partition**: Subdivision of a topic that stores a portion of the messages. Each partition is ordered and immutable. 
-- **Offset**: A unique identifier for each message within a partition.
+- **[Offset](https://www.redpanda.com/guides/kafka-architecture-kafka-offset)**: A unique identifier for each message within a partition.
 - **Consumer Group**: A collection of consumers working together to consume data from a topic's partitions.
 
 ## Durability and Fault Tolerance
@@ -41,7 +41,7 @@ So, basically, **Kafka is a set of machines working together to be able to handl
 - Producers can configure acknowledgment settings to ensure data persistence.
 
 ## Key Configurations
-**Retention Policy**: Defines how long Kafka retains messages (e.g., based on time or size).
+**[Retention Policy](https://www.redpanda.com/guides/kafka-alternatives-kafka-retention)**: Defines how long Kafka retains messages (e.g., based on time or size).
 
 **Partitioning**: Improves scalability by dividing data across partitions.
 
@@ -60,3 +60,33 @@ In Apache Kafka, partitions in a topic are distributed among consumers within th
 - Kafka ensures **each partition is assigned to exactly one consumer** in a group.
 - If **consumers > partitions**, some consumers will remain idle (not assigned any partitions).
 - If **partitions > consumers**, some consumers will handle multiple partitions. Kafka tries to distribute partitions as evenly as possible.
+
+
+## [Kafka Retention](https://www.redpanda.com/guides/kafka-alternatives-kafka-retention)
+Kafka retention refers to the duration and conditions under which Kafka retains messages in its topics. Kafka doesn't immediately delete messages after they are consumed. Instead, it retains them based on predefined policies, allowing multiple consumers to read messages at their own pace.
+
+### Key Aspect of Kafka Retention
+**Retention Time**
+- Kafka allows you to configure how long messages are kept in a topic.
+- This is defined using the configuration `log.retention.ms` (in milliseconds). For example, if set to 7 days (`604800000` ms), messages are retained for 7 days before being deleted.
+
+**Retention Size**
+- Instead of time-based retention, Kafka can also retain messages based on the total size of log segments.
+- This is configured using `log.retention.bytes`. For example, if set to `10GB`, Kafka deletes older messages when the topic size exceeds 10GB.
+
+**Retention Policies**
+Kafka applies these policies independently or in combination:
+
+- **Time-based**: Deletes messages older than the configured retention period.
+- **Size-based**: Deletes the oldest log segments when the topic reaches the configured size limit.
+- **Compaction**: Instead of deletion, Kafka can retain only the latest record for each key. This is useful for use cases like maintaining the current state of entities. This is controlled via the `cleanup.policy` set to `compact`.
+
+**Per Topic Configuration**
+- Retention settings can be applied globally (for all topics) or per topic. Per-topic retention is configured via the topic's properties during creation or update.
+
+**Default Retention Settings**
+- **If no specific configuration is set for a topic, Kafka uses the default values specified in the broker configurations.**
+
+**Impact on Consumer**
+- Retention policies do not affect **consumers** directly, as Kafka tracks **offsets** for each consumer group. Messages are deleted from disk only after they surpass the retention limits, regardless of whether all consumers have read them.
+- In Kafka, an **offset is a unique identifier for each message within a partition of a Kafka topic**. It is a simple integer that represents the position of a message in a partition. Each partition in a Kafka topic has its own offset sequence, starting from 0 for the first message in the partition.
