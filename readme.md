@@ -82,6 +82,11 @@ Yes, the replication factor in Kafka directly depends on the number of brokers i
 - If the replication factor is lower than the number of brokers, not all brokers will host replicas for every partition.
 - This setup is less resource-intensive but offers less fault tolerance.
 
+**All topics must have a replication factor configuration value, for Example**
+```javascript
+KafkaAdmin.createTopics([{ topic: TOPICS.RIDER_UPDATES, numPartitions: 2, replicationFactor: 2 }])
+```
+
 
 ## [Kafka Retention](https://www.redpanda.com/guides/kafka-alternatives-kafka-retention)
 Kafka retention refers to the duration and conditions under which Kafka retains messages in its topics. Kafka doesn't immediately delete messages after they are consumed. Instead, it retains them based on predefined policies, allowing multiple consumers to read messages at their own pace.
