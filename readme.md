@@ -62,6 +62,27 @@ In Apache Kafka, partitions in a topic are distributed among consumers within th
 - If **partitions > consumers**, some consumers will handle multiple partitions. Kafka tries to distribute partitions as evenly as possible.
 
 
+## [Replication Factor](https://medium.com/@_amanarora/replication-in-kafka-58b39e91b64e)
+Yes, the replication factor in Kafka directly depends on the number of brokers in the cluster.
+
+**What is the Replication Factor?**
+- The replication factor defines how many copies of a partition exist across the Kafka cluster.
+- For example, if a topic has 3 partitions and a replication factor of 3: Each partition will have one leader and two replicas, spread across three brokers.
+
+### Rules for Replication Factor
+**1. Cannot Exceed the Number of Brokers**
+- The replication factor must be less than or equal to the total number of brokers in the cluster.
+- If you set a replication factor greater than the number of brokers, Kafka will fail to create the topic.
+
+**2. Replication Factor = Number of Brokers**
+- If the replication factor equals the number of brokers, every broker will have one replica of each partition.
+- This provides high fault tolerance, as the cluster can survive up to `(replication factor - 1)` broker failures.
+
+**3. Replication Factor < Number of Brokers**
+- If the replication factor is lower than the number of brokers, not all brokers will host replicas for every partition.
+- This setup is less resource-intensive but offers less fault tolerance.
+
+
 ## [Kafka Retention](https://www.redpanda.com/guides/kafka-alternatives-kafka-retention)
 Kafka retention refers to the duration and conditions under which Kafka retains messages in its topics. Kafka doesn't immediately delete messages after they are consumed. Instead, it retains them based on predefined policies, allowing multiple consumers to read messages at their own pace.
 
